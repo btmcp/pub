@@ -221,7 +221,7 @@ The nonce is valid for **120 seconds** and single-use.
 Create the message to sign:
 
 ```
-BittensorMCP login: {nonce} @ {domain}
+bittensormcp-auth:{nonce}:{domain}
 ```
 
 Sign this exact string with your sr25519 coldkey. Example using the SDK:
@@ -230,7 +230,7 @@ Sign this exact string with your sr25519 coldkey. Example using the SDK:
 import { generateWallet } from '@bittensormcp/sign';
 
 const wallet = await generateWallet();
-const message = `BittensorMCP login: ${nonce} @ bittensormcp.com`;
+const message = `bittensormcp-auth:${nonce}:bittensormcp.com`;
 const signature = await wallet.sign(message);
 ```
 
