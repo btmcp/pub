@@ -6,7 +6,7 @@
 
 ## What premium unlocks
 
-### Free tier (17 tools)
+### Free tier (20 tools)
 
 All read-only tools are free and require no subscription:
 
@@ -28,9 +28,12 @@ All read-only tools are free and require no subscription:
 | `bittensor_blocks_until_next_epoch` | Blocks until next epoch for a subnet |
 | `bittensor_epoch_status` | Full epoch timing overview |
 | `bittensor_blocks_since_last_update` | Staleness check for a neuron |
+| `bittensor_neuron` | Neuron info by hotkey (uid, stake, emission, dividends) |
+| `bittensor_netuids_for_hotkey` | All subnets where a hotkey is registered |
+| `bittensor_owned_hotkeys` | All hotkeys owned by a coldkey |
 | `bittensor_premium_status` | Check your own tier, subscription, and billing info |
 
-### Premium tier (+17 tools)
+### Premium tier (17 write tools + 1 premium-only read)
 
 Premium adds on-chain writes via self-custodial A2 signing. Your private key never leaves your device.
 
