@@ -147,10 +147,12 @@ Use any wallet (btcli, Polkadot.js extension, Talisman, etc.). Send **at least**
 
 #### Step 3: Confirm with the transaction hash
 
+**Prerequisite**: You need a **wallet-session JWT** to call the billing endpoint. The server uses it to verify the transfer sender matches your session's SS58 address. If you don't have one, run the auth flow first (see [Obtaining a wallet-session JWT](#obtaining-a-wallet-session-jwt) below).
+
 ```bash
 curl -X POST https://bittensormcp.com/api/billing/confirm \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_WALLET_JWT" \
+  -H "Authorization: Bearer $WALLET_JWT" \
   -d '{"txHash": "0xabc123..."}'
 ```
 
@@ -170,7 +172,7 @@ Expected response (success):
 ```bash
 curl -X POST https://bittensormcp.com/api/billing/confirm \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_WALLET_JWT" \
+  -H "Authorization: Bearer $WALLET_JWT" \
   -d '{
     "txHash": "0xabc123...",
     "blockHash": "0xdef456..."
@@ -189,6 +191,73 @@ curl -X POST https://bittensormcp.com/api/billing/confirm \
 | 409 | `ALREADY_REDEEMED` | This txHash was already credited |
 | 503 | `TREASURY_ADDRESS not configured` | Server misconfiguration |
 | 504 | `FINALITY_TIMEOUT` | Chain service could not verify finalization within timeout |
+
+---
+
+### Obtaining a wallet-session JWT
+
+The billing confirm endpoint requires a **wallet-session JWT** (not an API key). The server verifies the transfer sender matches the session's SS58 address. Here's how to get one:
+
+#### Step 1: Request a challenge nonce
+
+```bash
+curl -X POST https://bittensormcp.com/api/auth/challenge \
+  -H "Content-Type: application/json" \
+  -d '{"ss58": "5YourSs58Address...", "domain": "bittensormcp.com"}'
+```
+
+Expected response:
+
+```json
+{
+  "nonce": "a1b2c3d4e5f6..."
+}
+```
+
+The nonce is valid for **120 seconds** and single-use.
+
+#### Step 2: Sign the challenge message
+
+Create the message to sign:
+
+```
+BittensorMCP login: {nonce} @ {domain}
+```
+
+Sign this exact string with your sr25519 coldkey. Example using the SDK:
+
+```javascript
+import { generateWallet } from '@bittensormcp/sign';
+
+const wallet = await generateWallet();
+const message = `BittensorMCP login: ${nonce} @ bittensormcp.com`;
+const signature = await wallet.sign(message);
+```
+
+#### Step 3: Verify and receive JWT
+
+```bash
+curl -X POST https://bittensormcp.com/api/auth/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ss58": "5YourSs58Address...",
+    "nonce": "a1b2c3d4e5f6...",
+    "signature": "0xSignatureHex..."
+  }'
+```
+
+Expected response:
+
+```json
+{
+  "token": "eyJhbG...",
+  "subscriptionValidUntil": null
+}
+```
+
+Store the `token` value — this is your `$WALLET_JWT` for the billing confirm endpoint. The token expires in **30 days**; re-authenticate when it expires.
+
+**Implementation source**: `service-a/src/app/api/auth/challenge/route.ts`, `service-a/src/app/api/auth/verify/route.ts`, `service-a/src/lib/session-jwt.ts`.
 
 ---
 
