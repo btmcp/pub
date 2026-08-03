@@ -104,34 +104,6 @@ For step-by-step connection instructions for every client, see the [Connect Guid
 
 All write tools use the A2 self-custody signing flow. Premium activation requires sending TAO to the treasury address (check `bittensor_premium_status` for the current rate).
 
-## Architecture
-
-```
-┌─────────────┐     HTTPS      ┌─────────────┐     internal     ┌─────────────┐
-│   MCP Client │ ─────────────> │  service-a  │ ───────────────> │  service-b  │
-│ (Claude/etc) │   Streamable   │  (Next.js)  │   HTTP/WSS       │  (FastAPI)  │
-└─────────────┘     HTTP       └─────────────┘                  └──────┬──────┘
-                                                                      │
-                                                                      ▼
-                                                              ┌─────────────┐
-                                                              │  Bittensor  │
-                                                              │   Finney    │
-                                                              └─────────────┘
-```
-
-- **service-a** (public): MCP endpoint, auth, web UI, rate limiting
-- **service-b** (private): Chain backend, direct Subtensor connection
-- **Database**: PostgreSQL for auth state, intents, audit log
-
-## Links
-
-- **Website**: https://bittensormcp.com
-- **Connect**: https://bittensormcp.com/connect
-- **MCP Endpoint**: `https://bittensormcp.com/api/mcp`
-- **SDK**: https://www.npmjs.com/package/@bittensormcp/sign
-- **Connect Guide**: [CONNECT.md](CONNECT.md) — step-by-step for all clients
-- **Full Agent Reference**: https://bittensormcp.com/llms.txt
-
 ## License
 
 MIT
