@@ -156,6 +156,8 @@ curl -X POST https://bittensormcp.com/api/billing/confirm \
   -d '{"txHash": "0xabc123..."}'
 ```
 
+**Auth header format**: The endpoint requires the token in the `Authorization: Bearer <token>` header. The server extracts it via `extractApiKey()` (an internal alias for `extractCredential()` that reads `Authorization: Bearer`). `x-api-key` is **not** used.
+
 Expected response (success):
 
 ```json
@@ -165,7 +167,7 @@ Expected response (success):
 }
 ```
 
-**Auth requirement**: This endpoint requires a **wallet-session JWT** (not an API key). The server verifies the transfer sender matches the session's SS58 address.
+**Auth requirement**: This endpoint requires a **wallet-session JWT** passed via the `Authorization: Bearer <token>` header (not an API key, not `x-api-key`). The server verifies the transfer sender matches the session's SS58 address.
 
 **Optional field**: You may include `blockHash` from the `isInBlock` callback to speed up verification (sub-second instead of scanning):
 
