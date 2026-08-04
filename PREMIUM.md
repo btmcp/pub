@@ -33,7 +33,7 @@ All read-only tools are free and require no subscription. The `bittensor_premium
 | `bittensor_owned_hotkeys` | All hotkeys owned by a coldkey |
 | `bittensor_premium_status` | Check your own tier, subscription, and billing info (free) |
 
-### Premium tier (16 write tools + 1 premium-only read)
+### Premium tier (17 write tools + 1 premium-only read)
 
 Premium adds on-chain writes via self-custodial A2 signing. Your private key never leaves your device. `bittensor_activity_log` is the only premium-gated read (a free account has no write history to report).
 
@@ -47,6 +47,7 @@ Premium adds on-chain writes via self-custodial A2 signing. Your private key nev
 | `bittensor_serve_axon` | Set axon endpoint (IP + port) |
 | `bittensor_weights_set` | Set validator weights |
 | `bittensor_weights_commit` | Commit weights hash (commit-reveal step 1) |
+| `bittensor_weights_reveal` | Reveal committed weights (commit-reveal step 2) |
 | `bittensor_subnet_register` | Register a new subnet |
 | `bittensor_subnet_start_call` | Activate emissions on your subnet |
 | `bittensor_subnet_identity_set` | Set subnet branding metadata |
@@ -128,11 +129,13 @@ Expected response (free user):
 ```json
 {
   "tier": "FREE",
+  "ss58": "5YourSs58Address...",
   "writesAvailable": false,
   "subscription": {
     "active": false,
-    "remainingDays": 0,
-    "subscriptionValidUntil": null
+    "premiumDisabled": false,
+    "subscriptionValidUntil": null,
+    "remainingDays": 0
   },
   "monthlyPriceTao": 0.1,
   "treasuryAddress": "5G7Agn...",
@@ -283,11 +286,13 @@ Expected response (premium, active):
 ```json
 {
   "tier": "PREMIUM",
+  "ss58": "5YourSs58Address...",
   "writesAvailable": true,
   "subscription": {
     "active": true,
-    "remainingDays": 28.5,
-    "subscriptionValidUntil": "2026-09-02T12:34:56.789Z"
+    "premiumDisabled": false,
+    "subscriptionValidUntil": "2026-09-02T12:34:56.789Z",
+    "remainingDays": 28.5
   },
   "monthlyPriceTao": 0.1,
   "treasuryAddress": "5G7Agn...",
