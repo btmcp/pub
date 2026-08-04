@@ -33,7 +33,7 @@ All read-only tools are free and require no subscription:
 | `bittensor_owned_hotkeys` | All hotkeys owned by a coldkey |
 | `bittensor_premium_status` | Check your own tier, subscription, and billing info |
 
-### Premium tier (17 write tools + 1 premium-only read)
+### Premium tier (16 write tools + 1 premium-only read)
 
 Premium adds on-chain writes via self-custodial A2 signing. Your private key never leaves your device.
 
