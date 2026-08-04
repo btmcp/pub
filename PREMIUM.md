@@ -8,7 +8,7 @@
 
 ### Free tier (20 tools)
 
-All read-only tools are free and require no subscription:
+All read-only tools are free and require no subscription. The `bittensor_premium_status` tool is also free — use it to check your tier before attempting writes.
 
 | Tool | What it does |
 |------|-------------|
@@ -31,11 +31,11 @@ All read-only tools are free and require no subscription:
 | `bittensor_neuron` | Neuron info by hotkey (uid, stake, emission, dividends) |
 | `bittensor_netuids_for_hotkey` | All subnets where a hotkey is registered |
 | `bittensor_owned_hotkeys` | All hotkeys owned by a coldkey |
-| `bittensor_premium_status` | Check your own tier, subscription, and billing info |
+| `bittensor_premium_status` | Check your own tier, subscription, and billing info (free) |
 
 ### Premium tier (16 write tools + 1 premium-only read)
 
-Premium adds on-chain writes via self-custodial A2 signing. Your private key never leaves your device.
+Premium adds on-chain writes via self-custodial A2 signing. Your private key never leaves your device. `bittensor_activity_log` is the only premium-gated read (a free account has no write history to report).
 
 | Tool | What it does |
 |------|-------------|
@@ -55,9 +55,8 @@ Premium adds on-chain writes via self-custodial A2 signing. Your private key nev
 | `bittensor_children_set` | Split stake across child hotkeys |
 | `bittensor_root_register` | Register on root network (netuid 0) |
 | `bittensor_root_claim` | Claim root-network emissions |
-| `bittensor_activity_log` | Your write history (paginated audit log) |
+| `bittensor_activity_log` | Your write history (paginated audit log) — premium-only read |
 
-Premium-only reads: `bittensor_activity_log` is gated behind premium (a free account has no write history to report).
 
 ---
 
