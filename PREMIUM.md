@@ -6,7 +6,7 @@
 
 ## What premium unlocks
 
-### Free tier (20 tools)
+### Free tier (28 tools)
 
 All read-only tools are free and require no subscription. The `bittensor_premium_status` tool is also free — use it to check your tier before attempting writes.
 
@@ -33,7 +33,7 @@ All read-only tools are free and require no subscription. The `bittensor_premium
 | `bittensor_owned_hotkeys` | All hotkeys owned by a coldkey |
 | `bittensor_premium_status` | Check your own tier, subscription, and billing info (free) |
 
-### Premium tier (17 write tools + 1 premium-only read)
+### Premium tier (23 write tools + 1 premium-only read)
 
 Premium adds on-chain writes via self-custodial A2 signing. Your private key never leaves your device. `bittensor_activity_log` is the only premium-gated read (a free account has no write history to report).
 
@@ -42,6 +42,10 @@ Premium adds on-chain writes via self-custodial A2 signing. Your private key nev
 | `bittensor_stake_add` | Stake TAO on a subnet |
 | `bittensor_stake_remove` | Unstake alpha from a subnet |
 | `bittensor_stake_move` | Move stake between subnets |
+| `bittensor_stake_swap` | Swap stake through the AMM (alpha → TAO → alpha) |
+| `bittensor_stake_transfer` | Transfer stake to a different coldkey |
+| `bittensor_stake_add_limit` | Limit-order stake (price-protected) |
+| `bittensor_stake_remove_limit` | Limit-order unstake (price-protected) |
 | `bittensor_transfer` | Transfer TAO to another address |
 | `bittensor_register` | Register a neuron on a subnet |
 | `bittensor_serve_axon` | Set axon endpoint (IP + port) |
@@ -56,6 +60,7 @@ Premium adds on-chain writes via self-custodial A2 signing. Your private key nev
 | `bittensor_children_set` | Split stake across child hotkeys |
 | `bittensor_root_register` | Register on root network (netuid 0) |
 | `bittensor_root_claim` | Claim root-network emissions |
+| `bittensor_set_auto_stake` | Auto-re-stake rewards to a hotkey |
 | `bittensor_activity_log` | Your write history (paginated audit log) — premium-only read |
 
 
