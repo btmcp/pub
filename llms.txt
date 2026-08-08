@@ -8,12 +8,12 @@
 - **Transport**: MCP Streamable HTTP (POST)
 - **Protocol version**: 2025-11-25
 - **Auth**: `Authorization: Bearer <WALLET_JWT>` header or URL path token
-- **Free tools**: 19 read tools (no signup, no key, no wallet)
+- **Free tools**: 20 read tools (no signup, no key, no wallet)
 - **Premium tools**: 22 write tools + 1 premium-only read tool (0.1 TAO/month)
 - **Differentiator**: Self-custodial — private keys never leave your device; the server only sees signatures
 - **SDK**: npm install @bittensormcp/sign
 
-## Free read tools (19)
+## Free read tools (20)
 
 - bittensor_balance — Free TAO balance of any SS58/coldkey address
 - bittensor_balance_batch — Free TAO balance for 2-50 SS58 addresses in one call
