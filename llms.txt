@@ -1,0 +1,144 @@
+# BittensorMCP
+
+> Live Bittensor chain access as MCP tools — free reads, premium on-chain writes.
+> One HTTPS endpoint, wallet-signature auth, self-custody: private keys never touch the server.
+
+- **Product**: BittensorMCP
+- **Endpoint**: https://bittensormcp.com/api/mcp
+- **Transport**: MCP Streamable HTTP (POST)
+- **Protocol version**: 2025-11-25
+- **Auth**: `Authorization: Bearer <WALLET_JWT>` header or URL path token
+- **Free tools**: 28 read tools (no signup, no key, no wallet)
+- **Premium tools**: 28 write tools + 1 premium-only read tool (0.1 TAO/month)
+- **Differentiator**: Self-custodial — private keys never leave your device; the server only sees signatures
+- **SDK**: npm install @bittensormcp/sign
+
+## Free read tools (28)
+
+- bittensor_balance — Free TAO balance of any SS58/coldkey address
+- bittensor_balance_batch — Free TAO balance for 2-50 SS58 addresses in one call
+- bittensor_account — Account overview: free balance + staked positions per subnet
+- bittensor_portfolio — Portfolio valued at current alpha prices
+- bittensor_subnet_list — Subnets with price, pools, emission, volume sorted by price; optional limit (1-256) for top-N
+- bittensor_subnet_metagraph — Top neurons by stake for a subnet
+- bittensor_subnet_hyperparams — Subnet hyperparameters (tempo, kappa, burn…)
+- bittensor_subnet_cost — Current TAO cost to register a new subnet
+- bittensor_subnet_directory — Read a subnet's on-chain identity (name, URL, GitHub, Discord…); pass netuid for one, omit for a listing
+- bittensor_validators — Validators ranked by yield_per_alpha (neutral on-chain metric)
+- bittensor_dynamic — Alpha price, AMM pools, moving price, volume for a subnet
+- bittensor_swap_sim — Simulate TAO↔alpha swap: expected received amount + slippage
+- bittensor_block — Current block height and hash
+- bittensor_blocks_until_next_epoch — Blocks until the subnet's next epoch (null when tempo 0)
+- bittensor_epoch_status — Epoch overview: tempo, current block, next epoch start, blocks until/since epoch
+- bittensor_blocks_since_last_update — Blocks since a neuron (netuid+uid) last set weights — validator staleness check
+- bittensor_neuron — Neuron on a subnet by hotkey: uid, coldkey, stake, emission, dividends, validator permit, axon
+- bittensor_netuids_for_hotkey — All subnets where a hotkey is registered
+- bittensor_owned_hotkeys — All hotkeys owned by a coldkey address
+- bittensor_weights — Validator-to-miner weight matrix for a subnet
+- bittensor_bonds — Validator bond matrix for a subnet
+- bittensor_crowdloan — A crowdloan's state (creator, deposit, raised, cap, end, target/call)
+- bittensor_crowdloans — All crowdloans on chain
+- bittensor_crowdloan_contributors — Contributors to a crowdloan with their contribution amounts
+- bittensor_lease — A subnet lease's state (beneficiary, coldkey, hotkey, emissions_share, end_block, netuid, cost)
+- bittensor_leases — All subnet leases on chain
+- bittensor_report_issue — Report an unexpected tool failure or bug to the BittensorMCP team (free for all authenticated users)
+- bittensor_premium_status — Check tier, subscription state, treasury address, and next steps (free)
+
+## Premium write tools (28)
+
+All write tools use A2 signing: the server returns an UNSIGNED_PAYLOAD, you sign the payload bytes locally with your sr25519 key, then submit the signature. Private keys never leave your device.
+
+### Staking & transfers
+- bittensor_stake_add — Stake TAO on a subnet (auto-picks best validator or pass explicit hotkey)
+- bittensor_stake_remove — Unstake alpha back to TAO
+- bittensor_stake_move — Move stake between subnets without TAO conversion
+- bittensor_stake_swap — Swap stake between subnets through the AMM (alpha → TAO → alpha, pays swap fees)
+- bittensor_stake_transfer — Transfer stake to a DIFFERENT coldkey (ownership change, irreversible)
+- bittensor_stake_add_limit — Limit-order stake: stake only if execution price ≤ limitPrice
+- bittensor_stake_remove_limit — Limit-order unstake: unstake only if execution price ≥ limitPrice
+- bittensor_transfer — Transfer TAO from your coldkey to any SS58 address
+- bittensor_set_auto_stake — Auto-re-stake rewards to a hotkey on a subnet
+
+### Miner/validator operations
+- bittensor_register — Register a neuron via burned registration
+- bittensor_serve_axon — Set axon endpoint (IP+port) — sign with HOTKEY session
+- bittensor_weights_set — Set weights as a validator — sign with HOTKEY session
+- bittensor_weights_commit — Commit a weights hash for later reveal (commit-reveal step 1) — sign with HOTKEY session
+- bittensor_weights_reveal — Reveal previously committed weights (commit-reveal step 2) — sign with HOTKEY session
+
+### Subnet management
+- bittensor_subnet_register — Register a new subnet (hotkey becomes UID 0; check bittensor_subnet_cost first)
+- bittensor_subnet_start_call — Activate emissions on a subnet you own
+- bittensor_subnet_identity_set — Set subnet branding: name, description, GitHub, contact, URL, logo, Discord
+
+### Validator economics
+- bittensor_delegate_take_increase — Raise your validator's delegate take (commission), 0-100 percent
+- bittensor_delegate_take_decrease — Lower your validator's delegate take (commission), 0-100 percent
+- bittensor_children_set — Split a hotkey's stake/authority across child hotkeys by proportion
+
+### Root network
+- bittensor_root_register — Register a hotkey on the root network (netuid 0)
+- bittensor_root_claim — Claim accumulated root-network emissions for one or more subnets
+
+### Crowdloan management
+- bittensor_dissolve_crowdloan — Dissolve a fully-refunded crowdloan (creator only)
+- bittensor_refund_crowdloan — Refund contributions to contributors (creator only, refunds up to 50 per call)
+- bittensor_update_crowdloan_cap — Raise or lower a crowdloan's cap (creator only, not finalized)
+- bittensor_update_crowdloan_end — Extend or shorten a crowdloan's contribution window (creator only)
+- bittensor_update_crowdloan_min_contribution — Change minimum contribution amount (creator only)
+- bittensor_set_crowdloan_max_contribution — Cap per-contributor amount (creator only)
+
+## Premium read tool (1)
+
+- bittensor_activity_log — Your own write history (tool, args, txHash, timestamp), paginated newest-first
+
+## Quick start
+
+**Claude Code:**
+```bash
+claude mcp add --transport http bittensormcp https://bittensormcp.com/api/mcp --header "Authorization: Bearer YOUR_JWT"
+```
+
+**Claude Desktop / Cursor / native Streamable-HTTP client:**
+```json
+{
+  "mcpServers": {
+    "bittensormcp": {
+      "url": "https://bittensormcp.com/api/mcp",
+      "headers": { "Authorization": "Bearer YOUR_JWT" }
+    }
+  }
+}
+```
+
+**Clients without native Streamable HTTP (mcp-remote bridge):**
+```json
+{
+  "mcpServers": {
+    "bittensormcp": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://bittensormcp.com/api/mcp",
+        "--header",
+        "Authorization:${AUTH_HEADER}"
+      ],
+      "env": { "AUTH_HEADER": "Bearer YOUR_JWT" }
+    }
+  }
+}
+```
+
+## Documentation
+
+- [Connect Guide](CONNECT.md) — Step-by-step connection instructions for all clients
+- [Premium Activation](PREMIUM.md) — Self-serve upgrade from free reads to premium writes
+- [Full Agent Onboarding](https://bittensormcp.com/llms.txt) — Complete reference for AI agents
+- [Signing SDK](https://www.npmjs.com/package/@bittensormcp/sign) — `@bittensormcp/sign` npm package
+
+## Links
+
+- Website: https://bittensormcp.com
+- Connect: https://bittensormcp.com/connect
+- MCP Endpoint: https://bittensormcp.com/api/mcp
+- SDK: https://www.npmjs.com/package/@bittensormcp/sign
